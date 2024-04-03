@@ -1,0 +1,11 @@
+---
+- name: Install Nix non-interactive
+  hosts: localhost
+  become: true
+  tasks:
+    - name: install nix
+      shell: "curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install --no-confirm --extra-conf \"substituters = https://cache.nixos.org https://fzakaria.cachix.org https://nix-postgres-artifacts.s3.amazonaws.com\" --extra-conf \"trusted-public-keys = nix-cache.supabase.com-1:ZfEc7Qb7SN+qOTJGMtCz54rnVQ1W2ZI2ROCSSD6YQYc= cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY= fzakaria.cachix.org-1:SpQviPuoJ3GnCVG40vwTp/r9y1/cbwP808SbMJ/XlGo=\" "
+    - name: nix version
+      shell: ". /nix/var/nix/profiles/default/etc/profile.d/nix.sh  && nix --version"
+    - name: nix profile install supabase psql 15.6 bundle (wrapppers and extensions)
+      shell: ". /nix/var/nix/profiles/default/etc/profile.d/nix.sh && nix profile install github:supabase/nix-postgres#psql_15/bin"
